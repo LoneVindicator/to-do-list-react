@@ -1,0 +1,243 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@100;200;300;400;500;600;700;800;900&display=swap');
+
+
+body{
+
+  display: flex;
+  flex-direction: column;
+
+  justify-content: center;
+  align-items: center;
+
+  font-family: 'Inter', sans-serif;
+}
+
+.App{
+
+  display: flex;
+  flex-direction: column;
+
+  justify-content: center;
+  align-items: center;
+
+  gap:1em;
+
+  width: 30vw;
+  
+
+}
+
+/* Hero */
+
+.hero-container{
+  
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+
+  background-color: #C1121F;
+  width: 100%;
+  height: 15vh;
+  
+  padding: 0.5em;
+  padding-bottom: 0em;
+  
+}
+
+.hero-title {
+
+  color: white;
+  font-size: 1.2em;
+
+  padding: 0em;
+
+}
+
+
+/* ================ */
+
+/* Info */
+
+.info-container {
+
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: flex-end;
+
+  width: 100%;
+  padding: 0.5em;
+  
+}
+
+.info-title-container{
+
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+  gap:0.8em;
+}
+
+.info-title {
+
+  font-size: 1.5em;
+  padding: 0em;
+
+}
+
+.info-counter{
+
+  background-color: #669BBC;
+  color: white;
+
+  font-size: 1em;
+  width: 2.5em;
+  text-align: center;
+
+  border-radius: 1em;
+}
+
+.info-nav-container{
+
+  display: flex;
+  flex-direction: row;
+  gap: 0.6em;
+
+  color: black;
+  font-weight: 600;
+}
+
+.info-nav-item:hover, .info-nav-item:focus{
+
+  color: #669BBC;
+  text-decoration: underline solid;
+  text-decoration-thickness: 0.15em;
+  text-underline-offset: 0.5em;
+}
+
+/* ================ */
+
+/* Add ToDo */
+
+.add-todo-container{
+
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+
+  width: 100%;
+  height: 3.5em;
+  padding: 0.5em;
+
+  background-color: #E3E3E3; 
+}
+
+.add-todo-input {
+
+  background: #D4D4D4;
+
+  height: 60%;
+  width: 95%;
+  padding-left: 1em;
+
+  font-weight: 800;
+
+  border: none;
+
+  transition: background-color 0.3s;
+
+
+}
+
+.add-todo-input:focus{
+
+  background-color: white;
+  font-weight: 500;
+
+  transition: background-color 0.3s;
+  border: none;
+  outline: none;
+
+
+}
+
+
+/* ================ */
+
+/* To List */
+
+.to-do-list-container {
+
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap:1em;
+
+  background-color: #E3E3E3;
+  width: 100%;
+  padding: 0.5em;
+  padding-top: 1em;
+  padding-bottom: 1em;
+  
+}
+
+.to-do-item-container{
+
+  display: flex;
+  flex-direction: row;
+  
+
+  width: 95%;
+  height: 3.2em;
+
+
+  border-radius: 1em 0em;
+  box-shadow: 0px 4px 4px 0px rgba(0, 0, 0, 0.25);
+
+  background-color: #ffffff;
+
+
+
+}
+
+.to-do-checkbox-container {
+
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  height: 100%;
+  width: 10%;
+  border-radius: 1em 0em 0em 0em;
+
+  background-color: #BE4040;
+
+}
+
+.to-do-img-container {
+
+  width: 1.2em; /* Adjust the size of the circle */
+  height: 1.2em;
+  padding: 0.5em;
+  border-radius: 50%; /* Make it a circle */
+
+  background-color: white;
+
+
+}
+
+.to-do-text{
+
+  padding: 0.7em;
+  margin: 0;
+
+  color: #8A8A8A;
+  font-weight: 500;
+}
+
+
+
+/* ================ */
