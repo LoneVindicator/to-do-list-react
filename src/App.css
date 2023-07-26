@@ -103,6 +103,7 @@ body{
   display: flex;
   flex-direction: row;
   gap: 0.6em;
+  font-size: 0.9em;
 
   color: black;
   font-weight: 600;
@@ -181,6 +182,8 @@ body{
   padding: 0.5em;
   padding-top: 1em;
   padding-bottom: 1em;
+
+  margin-bottom: 1em;
   
 }
 

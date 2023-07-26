@@ -1,6 +1,6 @@
 import React from "react";
 
-export default function ToDoItem() {
+export default function ToDoItem(props) {
 
     return (
 
@@ -15,7 +15,7 @@ export default function ToDoItem() {
 
             <div className="to-do-text-container">
 
-                <p className="to-do-text">Look into masterclass</p>
+                <p className="to-do-text">{props.task}</p>
             </div>
 
         </div>
