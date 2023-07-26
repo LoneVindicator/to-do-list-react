@@ -40,19 +40,40 @@ function App() {
     if (event.key === 'Enter') {
 
       let task = taskDescRef.current.value;
-      addTask(task);
+
+      const isInputValid = validateInput(task);
+      if(isInputValid == true){
+
+        addTask(task);
+
+      }
+
       taskDescRef.current.value = "";
 
     }
   };
+
+  function validateInput(text){
+
+    if (text.trim() === '') {
+      alert('Input cannot be empty');
+      return false;
+    } else if (text.length < 3) {
+      alert('Input must have at least 3 characters');
+      return false;
+    } 
+
+    return true;
+
+
+  }
 
   function addTask(task) {
 
     const taskObject = {
 
       key: uuidv4(),
-      task: task
-
+      task: task,
     }
 
     let retrievedTasks = JSON.parse(getTasksFromStorage());
@@ -79,11 +100,59 @@ function App() {
 
   }
 
+  
+
   function getTasksFromStorage() {
 
     const retrievedTasksFromStorage = localStorage.getItem("tasks");
     console.log(`Whats in storage: ${retrievedTasksFromStorage}`);
     return retrievedTasksFromStorage;
+
+  }
+
+  function deleteTask(taskId) {
+
+    let retrievedTasks = JSON.parse(getTasksFromStorage());
+
+    let updatedTasks = retrievedTasks.filter((task) => task.key !== taskId);
+    console.log(updatedTasks);
+
+    if(updatedTasks == ""){
+
+      updatedTasks = null;
+    }
+
+    localStorage.setItem("tasks", JSON.stringify(updatedTasks))
+
+
+    console.log(`task id: ${taskId} has been deleted`)
+    setSavedTasks(updatedTasks);
+
+
+  }
+
+  function editTask(taskId, editedTask) {
+
+    console.log(`task id: ${taskId} has been edited`)
+
+    let retrievedTasks = JSON.parse(getTasksFromStorage());
+
+    const updatedTasks = retrievedTasks.map((taskObj) => {
+      if (taskObj.key === taskId) {
+        // If it's the object to be edited, clone and update the 'task' property
+        return { ...taskObj, task: editedTask };
+      } else {
+        // Otherwise, return the original object
+        return taskObj;
+      }
+    });
+    
+    // Set the updated array to the state
+    localStorage.setItem("tasks", JSON.stringify(updatedTasks))
+
+
+    console.log(`editedTasks: ${updatedTasks}`)
+    setSavedTasks(updatedTasks);
 
   }
 
@@ -131,17 +200,30 @@ function App() {
 
       <div className='to-do-list-container'>
 
-        {allTasks && allTasks.map((task) => (
+        {allTasks && allTasks.reverse().map((task) => (
 
           <ToDoItem
             key={task.key}
+            id={task.key}
             task={task.task}
+            status={task.status}
+            deleteTask={deleteTask}
+            editTask={editTask}
 
           />
 
         ))}
 
+        {!allTasks &&
 
+          <>
+
+            <h1>No tasks found!</h1>
+            <p>trying adding some above</p>
+
+          </>
+
+        }
 
       </div>
 

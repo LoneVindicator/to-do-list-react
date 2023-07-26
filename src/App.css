@@ -1,7 +1,7 @@
 @import url('https://fonts.googleapis.com/css2?family=Inter:wght@100;200;300;400;500;600;700;800;900&display=swap');
 
 
-body{
+body {
 
   display: flex;
   flex-direction: column;
@@ -12,7 +12,7 @@ body{
   font-family: 'Inter', sans-serif;
 }
 
-.App{
+.App {
 
   display: flex;
   flex-direction: column;
@@ -20,17 +20,17 @@ body{
   justify-content: center;
   align-items: center;
 
-  gap:1em;
+  gap: 1em;
 
   width: 30vw;
-  
+
 
 }
 
 /* Hero */
 
-.hero-container{
-  
+.hero-container {
+
   display: flex;
   flex-direction: column;
   justify-content: flex-end;
@@ -38,10 +38,10 @@ body{
   background-color: #C1121F;
   width: 100%;
   height: 15vh;
-  
+
   padding: 0.5em;
   padding-bottom: 0em;
-  
+
 }
 
 .hero-title {
@@ -67,16 +67,16 @@ body{
 
   width: 100%;
   padding: 0.5em;
-  
+
 }
 
-.info-title-container{
+.info-title-container {
 
   display: flex;
   flex-direction: row;
   justify-content: center;
   align-items: center;
-  gap:0.8em;
+  gap: 0.8em;
 }
 
 .info-title {
@@ -86,7 +86,7 @@ body{
 
 }
 
-.info-counter{
+.info-counter {
 
   background-color: #669BBC;
   color: white;
@@ -98,7 +98,7 @@ body{
   border-radius: 1em;
 }
 
-.info-nav-container{
+.info-nav-container {
 
   display: flex;
   flex-direction: row;
@@ -109,7 +109,8 @@ body{
   font-weight: 600;
 }
 
-.info-nav-item:hover, .info-nav-item:focus{
+.info-nav-item:hover,
+.info-nav-item:focus {
 
   color: #669BBC;
   text-decoration: underline solid;
@@ -121,7 +122,7 @@ body{
 
 /* Add ToDo */
 
-.add-todo-container{
+.add-todo-container {
 
   display: flex;
   flex-direction: row;
@@ -132,7 +133,7 @@ body{
   height: 3.5em;
   padding: 0.5em;
 
-  background-color: #E3E3E3; 
+  background-color: #E3E3E3;
 }
 
 .add-todo-input {
@@ -152,7 +153,7 @@ body{
 
 }
 
-.add-todo-input:focus{
+.add-todo-input:focus {
 
   background-color: white;
   font-weight: 500;
@@ -175,7 +176,7 @@ body{
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  gap:1em;
+  gap: 1em;
 
   background-color: #E3E3E3;
   width: 100%;
@@ -184,17 +185,17 @@ body{
   padding-bottom: 1em;
 
   margin-bottom: 1em;
-  
+
 }
 
-.to-do-item-container{
+.to-do-item-container {
 
   display: flex;
   flex-direction: row;
-  
+  justify-content: space-between;
 
   width: 95%;
-  height: 3.2em;
+
 
 
   border-radius: 1em 0em;
@@ -214,6 +215,8 @@ body{
 
   height: 100%;
   width: 10%;
+  padding-left: 0.7em;
+  padding-right: 0.7em;
   border-radius: 1em 0em 0em 0em;
 
   background-color: #BE4040;
@@ -222,17 +225,19 @@ body{
 
 .to-do-img-container {
 
-  width: 1.2em; /* Adjust the size of the circle */
+  width: 1.2em;
+  /* Adjust the size of the circle */
   height: 1.2em;
   padding: 0.5em;
-  border-radius: 50%; /* Make it a circle */
+  border-radius: 50%;
+  /* Make it a circle */
 
   background-color: white;
 
 
 }
 
-.to-do-text{
+.to-do-text {
 
   padding: 0.7em;
   margin: 0;
@@ -244,3 +249,63 @@ body{
 
 
 /* ================ */
+
+#dropdown-basic {
+
+  border: none;
+  background-color: transparent;
+  font-size: 1em;
+  padding-right: 1em;
+  padding-top: 0.5em;
+
+}
+
+.dropdown-menu {
+
+  display: flex;
+  flex-direction: column;
+  gap: 0.8em;
+
+  width: 10em;
+  text-align: center;
+  background-color: white;
+
+  box-shadow: 0px 4px 4px 0px rgba(0, 0, 0, 0.25);
+
+}
+
+.dropdown-menu>a {
+
+  color: black;
+  text-decoration: none;
+
+}
+
+.dropdown-item {
+
+  display: flex;
+  flex-direction: row;
+  gap: 0.5em;
+  justify-content: center;
+
+  padding: 0.5em;
+
+}
+
+
+.dropdown-item:hover {
+
+  background-color: #BE4040;
+  color: white;
+
+
+}
+
+#dropdown-item-delete {}
+
+.marker-task-container {
+
+  display: flex;
+  flex-direction: row;
+  width: 80%;
+}
