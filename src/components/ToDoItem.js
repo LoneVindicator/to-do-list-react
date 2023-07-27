@@ -33,6 +33,7 @@ export default function ToDoItem(props) {
         if (isActive === true) { //if task is ongoing
 
             isActiveRef.current.style.backgroundColor = "#BE4040";
+            
 
         } else { //if task has been completed
 

@@ -7,6 +7,7 @@ import ToDoItem from './components/ToDoItem';
 import { v4 as uuidv4 } from 'uuid';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import { useAutoAnimate } from '@formkit/auto-animate/react'
 
 
 
@@ -55,6 +56,7 @@ function App() {
 
   const [currentDate, setCurrentDate] = React.useState("Sunday, July 23");
   const [currentTime, setCurrentTime] = React.useState('');
+  const [parent, enableAnimations] = useAutoAnimate(/* optional config */)
 
   const [savedTasks, setSavedTasks] = React.useState([]);
   const [taskCount, setTaskCount] = React.useState(0);
@@ -350,7 +352,7 @@ function App() {
 
 
   return (
-    <div className="App">
+    <div className="App" >
 
       <ToastContainer />
 
@@ -393,7 +395,7 @@ function App() {
 
       </div>
 
-      <div className='to-do-list-container'>
+      <div className='to-do-list-container' ref={parent}>
 
         {displayArray && displayArray.reverse().map((task) => (
 

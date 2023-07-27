@@ -239,6 +239,7 @@ body {
 
   opacity: 0.7;
   cursor: pointer;
+  transition: opacity 250ms ease-in;
 }
 
 .to-do-img-container {
@@ -390,7 +391,21 @@ body {
 
 
   color: white;
+  animation: fadeInOut 0.3s ease-in-out; /* CSS animation */
 }
+
+/* CSS animation for fadeInOut */
+@keyframes fadeInOut {
+  from {
+    opacity: 0;
+    transform: scale(0.7);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
 
 .add-todo-modal-container {
 
@@ -447,6 +462,7 @@ body {
   padding: 0.2em;
   border-radius: 0.2em;
   border:none;
+  cursor: pointer;
 
   background-color:#669BBC;
   color: white;
@@ -459,6 +475,14 @@ body {
 .movie-modal-submi-form{
 
   width: 100%;
+
+
+}
+
+.edit-modal-submit:hover{
+
+  opacity: 0.8;
+  transition: opacity 250ms ease-in;
 
 
 }
