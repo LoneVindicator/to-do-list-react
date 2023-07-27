@@ -1,6 +1,7 @@
 import logo from './logo.svg';
 import './App.css';
 import React from "react";
+import noTasksFoundImg from "./images/robot.png";
 
 import ToDoItem from './components/ToDoItem';
 import { v4 as uuidv4 } from 'uuid';
@@ -404,6 +405,8 @@ function App() {
             deleteTask={deleteTask}
             editTask={editTask}
             toggleStatus={toggleStatus}
+            validateInput={validateInput}
+            handleKeyPress={handleKeyPress}
 
           />
 
@@ -411,12 +414,13 @@ function App() {
 
         {!displayArray &&
 
-          <>
+          <div className='no-task-container'>
 
             <h1>No tasks found!</h1>
+            <img src={noTasksFoundImg} className='no-task-img'></img>
             <p>Trying adding some above</p>
 
-          </>
+          </div>
 
         }
 
