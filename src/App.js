@@ -4,37 +4,97 @@ import React from "react";
 
 import ToDoItem from './components/ToDoItem';
 import { v4 as uuidv4 } from 'uuid';
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 
 
 function App() {
 
+  const notifyDelete = () =>
+
+    toast.error('Task has been deleted', {
+      position: "top-right",
+      autoClose: 3000,
+      hideProgressBar: false,
+      closeOnClick: true,
+      pauseOnHover: true,
+      draggable: true,
+      progress: undefined,
+      theme: "colored",
+    });
+
+  const notifyEdit = () =>
+
+    toast.success('Task has been edited', {
+      position: "top-right",
+      autoClose: 3000,
+      hideProgressBar: false,
+      closeOnClick: true,
+      pauseOnHover: true,
+      draggable: true,
+      progress: undefined,
+      theme: "colored",
+    });
+
+  const notifyAdd = () =>
+
+    toast.info('New task has been added', {
+      position: "top-right",
+      autoClose: 3000,
+      hideProgressBar: false,
+      closeOnClick: true,
+      pauseOnHover: true,
+      draggable: true,
+      progress: undefined,
+      theme: "colored",
+    });
+
   const taskDescRef = React.useRef(null);
+
+  const [currentDate, setCurrentDate] = React.useState("Sunday, July 23");
+  const [currentTime, setCurrentTime] = React.useState('');
+
   const [savedTasks, setSavedTasks] = React.useState([]);
   const [taskCount, setTaskCount] = React.useState(0);
+  const [isFiltered, setIsFiltered] = React.useState("all");
+  const [filteredTasks, setFilteredTasks] = React.useState([]);
+  const [displayArray, setDisplayArray] = React.useState([]);
 
   let allTasks = JSON.parse(getTasksFromStorage());
 
   React.useEffect(() => {
 
-    allTasks = JSON.parse(getTasksFromStorage());
+    if (isFiltered == "active" || isFiltered == "completed") {
+      allTasks = filteredTasks;
+      console.log(`whats in allTasks ${allTasks}`)
+      console.log(`whats in isFiltered ${isFiltered}`)
+
+    } else {
+
+      allTasks = JSON.parse(getTasksFromStorage());
+      console.log(`whats in allTasks ${allTasks}`)
+
+    }
+
+    setDisplayArray(allTasks);
 
     try {
 
       setTaskCount(allTasks.length)
-      console.log(`task count set: ${taskCount}`);
+      // console.log(`task count set: ${taskCount}`);
 
     } catch (error) {
 
       setTaskCount(0)
-      console.log("task count not set");
+      // console.log("task count not set");
 
     }
 
 
+    DateDisplay();
 
-
-  }, [savedTasks])
+  }, [savedTasks, isFiltered])
 
   const handleKeyPress = (event) => {
     if (event.key === 'Enter') {
@@ -42,7 +102,7 @@ function App() {
       let task = taskDescRef.current.value;
 
       const isInputValid = validateInput(task);
-      if(isInputValid == true){
+      if (isInputValid == true) {
 
         addTask(task);
 
@@ -53,7 +113,7 @@ function App() {
     }
   };
 
-  function validateInput(text){
+  function validateInput(text) {
 
     if (text.trim() === '') {
       alert('Input cannot be empty');
@@ -61,7 +121,7 @@ function App() {
     } else if (text.length < 3) {
       alert('Input must have at least 3 characters');
       return false;
-    } 
+    }
 
     return true;
 
@@ -74,6 +134,7 @@ function App() {
 
       key: uuidv4(),
       task: task,
+      active: true,
     }
 
     let retrievedTasks = JSON.parse(getTasksFromStorage());
@@ -96,16 +157,19 @@ function App() {
     console.log(`is parse working: ${updatedTasks}`)
     setSavedTasks(updatedTasks);
 
+    notifyAdd();
+    refreshFilteredPage();
+
 
 
   }
 
-  
+
 
   function getTasksFromStorage() {
 
     const retrievedTasksFromStorage = localStorage.getItem("tasks");
-    console.log(`Whats in storage: ${retrievedTasksFromStorage}`);
+    // console.log(`Whats in storage: ${retrievedTasksFromStorage}`);
     return retrievedTasksFromStorage;
 
   }
@@ -117,7 +181,7 @@ function App() {
     let updatedTasks = retrievedTasks.filter((task) => task.key !== taskId);
     console.log(updatedTasks);
 
-    if(updatedTasks == ""){
+    if (updatedTasks == "") {
 
       updatedTasks = null;
     }
@@ -127,6 +191,9 @@ function App() {
 
     console.log(`task id: ${taskId} has been deleted`)
     setSavedTasks(updatedTasks);
+
+    notifyDelete();
+    refreshFilteredPage();
 
 
   }
@@ -146,7 +213,7 @@ function App() {
         return taskObj;
       }
     });
-    
+
     // Set the updated array to the state
     localStorage.setItem("tasks", JSON.stringify(updatedTasks))
 
@@ -154,16 +221,142 @@ function App() {
     console.log(`editedTasks: ${updatedTasks}`)
     setSavedTasks(updatedTasks);
 
+    notifyEdit();
+    refreshFilteredPage();
+
   }
+
+  function toggleStatus(taskId, status) {
+
+    // console.log(`task id: ${taskId} has status change`)
+
+    let retrievedTasks = JSON.parse(getTasksFromStorage());
+
+    const updatedTasks = retrievedTasks.map((taskObj) => {
+      if (taskObj.key === taskId) {
+        // If it's the object to be edited, clone and update the 'task' property
+        return { ...taskObj, active: status };
+      } else {
+        // Otherwise, return the original object
+        return taskObj;
+      }
+    });
+
+    // Set the updated array to the state
+    localStorage.setItem("tasks", JSON.stringify(updatedTasks))
+
+
+    // console.log(`updated status: ${JSON.stringify(updatedTasks)}`)
+    setSavedTasks(updatedTasks);
+    refreshFilteredPage();
+
+  }
+
+  const handleFilterTasks = (criteria) => () => {
+    filterTasks(criteria);
+  };
+
+  const filterTasks = (criteria) => {
+
+    let retrievedTasks = JSON.parse(getTasksFromStorage());
+    let updatedTasks;
+
+    if (retrievedTasks === null) {
+
+      retrievedTasks = [];
+      console.log("array is empty! i.e. it is null")
+
+    }
+
+    if (criteria == "all") {
+
+      updatedTasks = retrievedTasks;
+      setIsFiltered(criteria);
+      console.log(`filtered by active-${criteria}: ${updatedTasks}`);
+      console.log("filter is on all")
+
+
+    } else {
+
+      updatedTasks = retrievedTasks.filter((task) => task.active == criteria);
+      console .log(`filtered by active-${criteria}: ${updatedTasks}`);
+
+      if (updatedTasks == "") {
+
+        updatedTasks = null;
+      }
+
+      if(criteria == true){
+
+        setIsFiltered("active");
+
+        console.log("filter is on active")
+
+
+      }else{
+
+        setIsFiltered("completed");
+     
+        console.log("filter is on completed")
+
+
+      }
+
+      
+
+
+    }
+
+    allTasks = updatedTasks;
+    setFilteredTasks(updatedTasks);
+
+  };
+
+  function refreshFilteredPage(){
+
+    if (isFiltered == "active") {
+
+      filterTasks(true);
+
+
+    } else if(isFiltered == "completed"){
+
+      filterTasks(false);
+    }
+  }
+
+  const DateDisplay = () => {
+    
+      // Create a new Date object with the current date and time
+      const date = new Date();
+    
+      // Define options for the toLocaleString method for date and time
+      const dateOptions = { weekday: 'long', month: 'long', day: 'numeric' };
+      const timeOptions = { hour: 'numeric', minute: 'numeric'};
+    
+      // Format the date and time using toLocaleString with the defined options
+      const formattedDate = date.toLocaleString('en-US', dateOptions);
+      const formattedTime = date.toLocaleString('en-US', timeOptions);
+    
+      setCurrentDate(`${formattedDate}`);
+      setCurrentTime(`${formattedTime}`);
+ 
+  
+  };
+
+  
 
 
 
   return (
     <div className="App">
 
+      <ToastContainer />
+
       <div className='hero-container'>
 
-        <h1 className='hero-title'>Sunday, July 23</h1>
+        <h1 className='hero-title'>{currentDate}</h1>
+        <p className='hero-sub-title'>{currentTime}</p>
 
       </div>
 
@@ -184,8 +377,9 @@ function App() {
 
         <div className='info-nav-container'>
 
-          <div className='info-nav-item info-nav-active-item'>Active</div>
-          <div className='info-nav-item info-nav-completed-item'>Completed</div>
+          <div className='info-nav-item info-nav-completed-item' onClick={handleFilterTasks("all")} >All</div>
+          <div className='info-nav-item info-nav-active-item' onClick={handleFilterTasks(true)} >Active</div>
+          <div className='info-nav-item info-nav-completed-item' onClick={handleFilterTasks(false)} >Completed</div>
 
 
         </div>
@@ -200,30 +394,32 @@ function App() {
 
       <div className='to-do-list-container'>
 
-        {allTasks && allTasks.reverse().map((task) => (
+        {displayArray && displayArray.reverse().map((task) => (
 
           <ToDoItem
             key={task.key}
             id={task.key}
             task={task.task}
-            status={task.status}
+            status={task.active}
             deleteTask={deleteTask}
             editTask={editTask}
+            toggleStatus={toggleStatus}
 
           />
 
         ))}
 
-        {!allTasks &&
+        {!displayArray &&
 
           <>
 
             <h1>No tasks found!</h1>
-            <p>trying adding some above</p>
+            <p>Trying adding some above</p>
 
           </>
 
         }
+
 
       </div>
 

@@ -10,6 +10,7 @@ body {
   align-items: center;
 
   font-family: 'Inter', sans-serif;
+  --toastify-color-info: #669BBC;
 }
 
 .App {
@@ -40,17 +41,27 @@ body {
   height: 15vh;
 
   padding: 0.5em;
-  padding-bottom: 0em;
+  padding-bottom: 1em;
 
 }
 
 .hero-title {
 
   color: white;
-  font-size: 1.2em;
+  font-size: 1.4em;
+  font-weight: 800;
+  margin-bottom: 0.2em;
 
   padding: 0em;
 
+}
+
+.hero-sub-title{
+
+  color: rgb(214, 203, 203);
+  font-size: 0.9em;
+  font-weight: 400;
+  margin: 0;
 }
 
 
@@ -116,6 +127,7 @@ body {
   text-decoration: underline solid;
   text-decoration-thickness: 0.15em;
   text-underline-offset: 0.5em;
+  cursor: pointer;
 }
 
 /* ================ */
@@ -223,7 +235,18 @@ body {
 
 }
 
+.to-do-checkbox-container:hover{
+
+  opacity: 0.7;
+  cursor: pointer;
+}
+
 .to-do-img-container {
+
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
 
   width: 1.2em;
   /* Adjust the size of the circle */
@@ -232,8 +255,8 @@ body {
   border-radius: 50%;
   /* Make it a circle */
 
-  background-color: white;
-
+  background-color:white;
+  color: rgb(70, 67, 67);
 
 }
 
@@ -254,9 +277,11 @@ body {
 
   border: none;
   background-color: transparent;
-  font-size: 1em;
+  color: #8A8A8A;
+  font-size: 0.9em;
   padding-right: 1em;
   padding-top: 0.5em;
+  cursor: pointer;
 
 }
 

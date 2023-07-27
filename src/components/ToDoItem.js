@@ -1,12 +1,35 @@
 import React, { useState } from "react";
 import Dropdown from 'react-bootstrap/Dropdown';
-import { FaEllipsisV } from 'react-icons/fa'; // Import the kebab menu icon from font-awesome (or any other icon library)
-import { FaTrash } from 'react-icons/fa'; 
-import { FaPen } from 'react-icons/fa'; 
-
+import { FaCheck, FaEllipsisV } from 'react-icons/fa'; // Import the kebab menu icon from font-awesome (or any other icon library)
+import { FaTrash } from 'react-icons/fa';
+import { FaPen } from 'react-icons/fa';
 
 export default function ToDoItem(props) {
     const [showContextMenu, setShowContextMenu] = useState(false);
+
+    const [isActive, setIsActive] = useState(props.status);
+    const isActiveRef = React.useRef(null);
+
+    React.useEffect(() => {
+
+        // console.log(`Marker Color BEFORE: ${isActiveRef.current.style.backgroundColor}`)
+
+        if (isActive === true) { //if task is ongoing
+
+            isActiveRef.current.style.backgroundColor = "#BE4040";
+
+        } else { //if task has been completed
+
+            isActiveRef.current.style.backgroundColor = "#669BBC";
+
+
+        }
+
+        // console.log(`Marker Color AFTER: isActive = ${isActiveRef.current.style.backgroundColor}`)
+
+
+
+    }, [isActive])
 
     const handleContextMenu = (e) => {
         e.preventDefault();
@@ -26,7 +49,27 @@ export default function ToDoItem(props) {
     const handleDeleteTask = () => {
         props.deleteTask(props.id);
         handleContextMenuClose();
+        
     };
+
+    const handleToggleStatus = () => {
+
+        let status = isActive;
+
+        console.log(`handleToggleStatus BEFORE: ${status}`);
+
+        status = !isActive;
+
+        props.toggleStatus(props.id, status);
+
+
+        console.log(`handleToggleStatus AFTER: ${status}`);
+
+        setIsActive(status);
+
+    };
+
+
 
 
     return (
@@ -36,17 +79,23 @@ export default function ToDoItem(props) {
             onMouseLeave={handleContextMenuClose}
         >
 
+
+
             <div className="marker-task-container">
 
-            <div className="to-do-checkbox-container">
-                <div className="to-do-img-container"></div>
-            </div>
+                <div className="to-do-checkbox-container" onClick={handleToggleStatus} ref={isActiveRef}>
+                    <div className="to-do-img-container">
 
-            <div className="to-do-text-container">
-                <p className="to-do-text">{props.task}</p>
-            </div>
+                        {!isActive && <FaCheck />}
 
-                
+                    </div>
+                </div>
+
+                <div className="to-do-text-container">
+                    <p className="to-do-text">{props.task}</p>
+                </div>
+
+
             </div>
 
 
@@ -64,7 +113,7 @@ export default function ToDoItem(props) {
                 </Dropdown>
             )}
 
-            
+
         </div>
     );
 }
