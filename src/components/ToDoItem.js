@@ -6,9 +6,9 @@ import { FaTrash } from 'react-icons/fa';
 import { FaPen } from 'react-icons/fa';
 
 export default function ToDoItem(props) {
-    const [showContextMenu, setShowContextMenu] = useState(false);
+    const [showContextMenu, setShowContextMenu] = React.useState(false);
 
-    const [isActive, setIsActive] = useState(props.status);
+    const [isActive, setIsActive] = React.useState(props.status);
     const isActiveRef = React.useRef(null);
     const [isModalOpen, setIsModalOpen] = React.useState(false);
 

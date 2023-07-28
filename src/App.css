@@ -33,8 +33,9 @@ body {
 .hero-container {
 
   display: flex;
-  flex-direction: column;
-  justify-content: flex-end;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: flex-end;
 
   background-color: #C1121F;
   width: 100%;
@@ -62,6 +63,13 @@ body {
   font-size: 0.9em;
   font-weight: 400;
   margin: 0;
+}
+
+#dropdown-item-clear-storage:hover{
+
+  background-color: white;
+  color: black;
+
 }
 
 
@@ -114,10 +122,18 @@ body {
   display: flex;
   flex-direction: row;
   gap: 0.6em;
+
+}
+
+.info-nav-item{
+
   font-size: 0.9em;
 
   color: black;
   font-weight: 600;
+  text-decoration: none;
+
+
 }
 
 .info-nav-item:hover,

@@ -2,12 +2,18 @@ import logo from './logo.svg';
 import './App.css';
 import React from "react";
 import noTasksFoundImg from "./images/robot.png";
+import Dropdown from 'react-bootstrap/Dropdown';
+import { FaEllipsisV } from 'react-icons/fa';
 
 import ToDoItem from './components/ToDoItem';
 import { v4 as uuidv4 } from 'uuid';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
-import { useAutoAnimate } from '@formkit/auto-animate/react'
+import { useAutoAnimate } from '@formkit/auto-animate/react';
+
+import Container from 'react-bootstrap/Container';
+import Nav from 'react-bootstrap/Nav';
+import Navbar from 'react-bootstrap/Navbar';
 
 
 
@@ -52,17 +58,40 @@ function App() {
       theme: "colored",
     });
 
+  const notifyClearStorage = () =>
+
+    toast.info('Storage has been cleared', {
+      position: "top-right",
+      autoClose: 3000,
+      hideProgressBar: false,
+      closeOnClick: true,
+      pauseOnHover: true,
+      draggable: true,
+      progress: undefined,
+      theme: "colored",
+    });
+
   const taskDescRef = React.useRef(null);
 
   const [currentDate, setCurrentDate] = React.useState("Sunday, July 23");
   const [currentTime, setCurrentTime] = React.useState('');
-  const [parent, enableAnimations] = useAutoAnimate(/* optional config */)
+  const [parent, enableAnimations] = useAutoAnimate(/* optional config */);
+  const [showContextMenu, setShowContextMenu] = React.useState(false);
 
   const [savedTasks, setSavedTasks] = React.useState([]);
   const [taskCount, setTaskCount] = React.useState(0);
   const [isFiltered, setIsFiltered] = React.useState("all");
   const [filteredTasks, setFilteredTasks] = React.useState([]);
   const [displayArray, setDisplayArray] = React.useState([]);
+
+  const handleContextMenu = (e) => {
+    e.preventDefault();
+    setShowContextMenu(true);
+  };
+
+  const handleContextMenuClose = () => {
+    setShowContextMenu(false);
+  };
 
   let allTasks = JSON.parse(getTasksFromStorage());
 
@@ -282,30 +311,30 @@ function App() {
     } else {
 
       updatedTasks = retrievedTasks.filter((task) => task.active == criteria);
-      console .log(`filtered by active-${criteria}: ${updatedTasks}`);
+      console.log(`filtered by active-${criteria}: ${updatedTasks}`);
 
       if (updatedTasks == "") {
 
         updatedTasks = null;
       }
 
-      if(criteria == true){
+      if (criteria == true) {
 
         setIsFiltered("active");
 
         console.log("filter is on active")
 
 
-      }else{
+      } else {
 
         setIsFiltered("completed");
-     
+
         console.log("filter is on completed")
 
 
       }
 
-      
+
 
 
     }
@@ -315,39 +344,55 @@ function App() {
 
   };
 
-  function refreshFilteredPage(){
+  function refreshFilteredPage() {
 
     if (isFiltered == "active") {
 
       filterTasks(true);
 
 
-    } else if(isFiltered == "completed"){
+    } else if (isFiltered == "completed") {
 
       filterTasks(false);
     }
   }
 
+  function clearStorage() {
+
+    let updatedTasks = [];
+    
+
+    localStorage.clear();
+    handleContextMenuClose();
+    notifyClearStorage();
+    refreshFilteredPage();
+    setSavedTasks(updatedTasks)
+
+
+  }
+
+
+
   const DateDisplay = () => {
-    
-      // Create a new Date object with the current date and time
-      const date = new Date();
-    
-      // Define options for the toLocaleString method for date and time
-      const dateOptions = { weekday: 'long', month: 'long', day: 'numeric' };
-      const timeOptions = { hour: 'numeric', minute: 'numeric'};
-    
-      // Format the date and time using toLocaleString with the defined options
-      const formattedDate = date.toLocaleString('en-US', dateOptions);
-      const formattedTime = date.toLocaleString('en-US', timeOptions);
-    
-      setCurrentDate(`${formattedDate}`);
-      setCurrentTime(`${formattedTime}`);
- 
-  
+
+    // Create a new Date object with the current date and time
+    const date = new Date();
+
+    // Define options for the toLocaleString method for date and time
+    const dateOptions = { weekday: 'long', month: 'long', day: 'numeric' };
+    const timeOptions = { hour: 'numeric', minute: 'numeric' };
+
+    // Format the date and time using toLocaleString with the defined options
+    const formattedDate = date.toLocaleString('en-US', dateOptions);
+    const formattedTime = date.toLocaleString('en-US', timeOptions);
+
+    setCurrentDate(`${formattedDate}`);
+    setCurrentTime(`${formattedTime}`);
+
+
   };
 
-  
+
 
 
 
@@ -356,10 +401,29 @@ function App() {
 
       <ToastContainer />
 
-      <div className='hero-container'>
+      <div className='hero-container' onMouseEnter={handleContextMenu} onMouseLeave={handleContextMenuClose}>
 
-        <h1 className='hero-title'>{currentDate}</h1>
-        <p className='hero-sub-title'>{currentTime}</p>
+        <div className='hero-text-container'>
+
+          <h1 className='hero-title'>{currentDate}</h1>
+          <p className='hero-sub-title'>{currentTime}</p>
+
+        </div>
+
+        {showContextMenu && (
+          <Dropdown>
+            {/* Custom kebab menu as the Dropdown.Toggle */}
+            <Dropdown.Toggle variant="success" id="dropdown-basic">
+              <FaEllipsisV />
+            </Dropdown.Toggle>
+
+            <Dropdown.Menu>
+              <Dropdown.Item href="#/action-1" id='dropdown-item-clear-storage' onClick={clearStorage}>Clear Storage</Dropdown.Item>
+
+            </Dropdown.Menu>
+          </Dropdown>
+        )}
+
 
       </div>
 
@@ -378,14 +442,16 @@ function App() {
 
         </div>
 
-        <div className='info-nav-container'>
+        <Navbar bg="dark" data-bs-theme="dark">
+          <Container>
 
-          <div className='info-nav-item info-nav-completed-item' onClick={handleFilterTasks("all")} >All</div>
-          <div className='info-nav-item info-nav-active-item' onClick={handleFilterTasks(true)} >Active</div>
-          <div className='info-nav-item info-nav-completed-item' onClick={handleFilterTasks(false)} >Completed</div>
-
-
-        </div>
+            <Nav className="me-auto info-nav-container">
+              <Nav.Link href="#" className='info-nav-item info-nav-completed-item' onClick={handleFilterTasks("all")}>Home</Nav.Link>
+              <Nav.Link href="#" className='info-nav-item info-nav-active-item' onClick={handleFilterTasks(true)} >Active</Nav.Link>
+              <Nav.Link href="#" className='info-nav-item info-nav-completed-item' onClick={handleFilterTasks(false)}>Completed</Nav.Link>
+            </Nav>
+          </Container>
+        </Navbar>
 
       </div>
 
@@ -418,6 +484,8 @@ function App() {
 
           <div className='no-task-container'>
 
+
+
             <h1>No tasks found!</h1>
             <img src={noTasksFoundImg} className='no-task-img'></img>
             <p>Trying adding some above</p>
@@ -425,7 +493,6 @@ function App() {
           </div>
 
         }
-
 
       </div>
 
